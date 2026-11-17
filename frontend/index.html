@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sci-Guard | Scientific Forgery Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-circles"></div>
+    
+    <nav>
+        <div class="logo">SCI-GUARD <span>v2.0</span></div>
+        <div class="nav-links">
+            <a href="#" class="active">Analyze</a>
+            <a href="#">Report</a>
+            <a href="#">Settings</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Scientific Integrity <span>Analyzer</span></h1>
+            <p>Dual-stream Swin-V2 Network for pixel-level forgery localization in biomedical imaging.</p>
+        </section>
+
+        <section class="upload-container">
+            <div id="drop-zone" class="drop-zone">
+                <div class="drop-zone-content">
+                    <div class="icon-scan"></div>
+                    <p>Drag & Drop Image or <span>Browse</span></p>
+                    <small>Supports Western Blots, Microscopy, PCR Scans (.png, .jpg)</small>
+                </div>
+                <input type="file" id="file-input" hidden accept="image/*">
+            </div>
+        </section>
+
+        <div id="loading" class="hidden">
+            <div class="scanner-container">
+                <div class="scan-line"></div>
+                <p id="status-text">INITIATING FORENSIC SCAN...</p>
+            </div>
+        </div>
+
+        <section id="result-section" class="hidden">
+            <div class="grid-container">
+                <div class="result-card image-card">
+                    <h3>Source Image</h3>
+                    <div class="image-wrapper">
+                        <img id="source-img" src="" alt="Source">
+                    </div>
+                </div>
+
+                <div class="result-card analysis-card">
+                    <h3>Forensic Heatmap</h3>
+                    <div class="image-wrapper">
+                        <img id="overlay-img" src="" alt="Overlay">
+                        <canvas id="scanner-overlay"></canvas>
+                    </div>
+                </div>
+
+                <div class="result-card verdict-card">
+                    <h3>Analysis Verdict</h3>
+                    <div class="score-container">
+                        <div id="verdict-label" class="verdict">LOW RISK</div>
+                        <div id="confidence-score" class="confidence">0%</div>
+                        <p>Forgery Probability</p>
+                    </div>
+                    
+                    <div class="trust-stats">
+                        <div class="stat">
+                            <span>Spatial Evidence (M1)</span>
+                            <div class="progress-bar"><div id="m1-bar" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="stat">
+                            <span>Forensic Noise (M2)</span>
+                            <div class="progress-bar"><div id="m2-bar" style="width: 0%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="window.location.reload()" class="reset-btn">New Analysis</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
