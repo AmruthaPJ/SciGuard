@@ -51,7 +51,8 @@ async function handleFileUpload(file) {
     }, 800);
 
     try {
-        const response = await fetch('http://localhost:5001/analyze', {
+        const API_BASE = window.location.protocol === 'file:' ? 'http://localhost:5001' : '';
+        const response = await fetch(`${API_BASE}/analyze`, {
             method: 'POST',
             body: formData
         });
