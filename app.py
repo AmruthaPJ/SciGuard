@@ -44,27 +44,25 @@ model = None
 loaded = False
 
 if HAVE_DL_DEPENDENCIES:
-    try:
-        model = SciGuard()
-        for path in MODEL_PATHS:
-            if os.path.exists(path):
-                try:
-                    state_dict = torch.load(path, map_location=DEVICE)
-                    if 'model_state_dict' in state_dict:
-                        model.load_state_dict(state_dict['model_state_dict'], strict=False)
-                    else:
-                        model.load_state_dict(state_dict, strict=False)
-                    print(f"✅ Successfully loaded forensic weights from: {path}")
-                    loaded = True
-                    break
-                except Exception as e:
-                    print(f"❌ Error loading {path}: {e}")
-
-        if loaded:
-            model.to(DEVICE)
-            model.eval()
-    except Exception as e:
-        print(f"Model init notice: {e}")
+    # Only initialize the neural network if a trained .pth weights file exists on disk.
+    # This avoids downloading heavy Swin-V2 backbones from HF Hub and spiking RAM > 512MB on cloud hosts like Render.
+    for path in MODEL_PATHS:
+        if os.path.exists(path):
+            try:
+                print(f"Loading weights from {path}...")
+                model = SciGuard()
+                state_dict = torch.load(path, map_location=DEVICE)
+                if 'model_state_dict' in state_dict:
+                    model.load_state_dict(state_dict['model_state_dict'], strict=False)
+                else:
+                    model.load_state_dict(state_dict, strict=False)
+                model.to(DEVICE)
+                model.eval()
+                print(f"✅ Successfully loaded forensic weights from: {path}")
+                loaded = True
+                break
+            except Exception as e:
+                print(f"❌ Error loading {path}: {e}")
 
 if not loaded:
     print(f"⚡ Smart Forensics & Demo Mode Active (Indexed {len(auth_sizes)} authentic & {len(forged_sizes)} forged reference samples).")
